@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jamb</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,100;0,200;0,300;0,400;1,100;1,200;1,300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #050505;
+        }
+    </style>
+</head>
+<body class="text-white selection:bg-white/20">
+
+    <nav class="fixed top-0 w-full z-50 pt-6 pb-2 transition-all duration-300" id="navbar">
+        <div class="max-w-[95%] mx-auto px-6 py-4 flex justify-between items-center bg-black/40 backdrop-blur-md border border-white/10 rounded-full">
+            <h1 class="text-xl font-light tracking-widest italic pl-2">Jamb</h1>
+            <div class="flex gap-8 text-sm font-light text-gray-400 pr-4">
+    <a href="#subjects-section" class="hover:text-white transition-colors">Subjects</a>
+    <a href="coming-soon.html" class="hover:text-white transition-colors">Assignments</a>
+    <a href="coming-soon.html" class="hover:text-white transition-colors">Archive</a>
+</div>
+        </div>
+    </nav>
+
+    <header class="relative h-[85vh] max-w-[95%] mx-auto mt-24 rounded-[2.5rem] flex flex-col items-center justify-center overflow-hidden border border-white/10 shadow-2xl">
+        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-90">
+            <source src="assets/videos/Animated_Image_Request_Fulfilled.mp4" type="video/mp4">
+        </video>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>
+        
+        <div class="relative z-10 text-center px-6 mt-12">
+            <h2 class="text-5xl md:text-7xl font-extralight tracking-tight leading-tight text-white/95">
+                Too many Errors?<br>
+                Just <span class="italic font-light">Jamb</span> ts shi
+            </h2>
+            <a href="#subjects-section" class="inline-block mt-10 px-8 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-light hover:bg-white/20 transition-all">
+                Explore Subjects
+            </a>
+        </div>
+    </header>
+
+    <main id="subjects-section" class="max-w-[95%] mx-auto px-6 py-32">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div onclick="openSubject('ada')" class="subject-card group cursor-pointer relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <i class="ph ph-tree-structure text-3xl mb-4 text-white/70 group-hover:text-purple-400 transition-colors"></i>
+                <h3 class="text-xl font-light tracking-wide relative z-10">ADA</h3>
+                <p class="text-gray-500 text-xs mt-2 font-extralight relative z-10">Design & Analysis of Algorithms</p>
+            </div>
+            <div onclick="openSubject('dbms')" class="subject-card group cursor-pointer relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <i class="ph ph-database text-3xl mb-4 text-white/70 group-hover:text-blue-400 transition-colors"></i>
+                <h3 class="text-xl font-light tracking-wide relative z-10">DBMS</h3>
+                <p class="text-gray-500 text-xs mt-2 font-extralight relative z-10">Database Management Systems</p>
+            </div>
+            <div onclick="openSubject('latex')" class="subject-card group cursor-pointer relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-green-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <i class="ph ph-article text-3xl mb-4 text-white/70 group-hover:text-green-400 transition-colors"></i>
+                <h3 class="text-xl font-light tracking-wide relative z-10">LaTeX</h3>
+                <p class="text-gray-500 text-xs mt-2 font-extralight relative z-10">Document Typesetting</p>
+            </div>
+            <div onclick="openSubject('mc')" class="subject-card group cursor-pointer relative overflow-hidden">
+                <div class="absolute inset-0 bg-gradient-to-br from-orange-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
+                <i class="ph ph-device-mobile text-3xl mb-4 text-white/70 group-hover:text-orange-400 transition-colors"></i>
+                <h3 class="text-xl font-light tracking-wide relative z-10">MC</h3>
+                <p class="text-gray-500 text-xs mt-2 font-extralight relative z-10">Micro Controller</p>
+            </div>
+        </div>
+    </main>
+
+    <div id="programListModal" class="fixed inset-0 z-[100] hidden bg-black/80 backdrop-blur-sm flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-[#111] w-full max-w-2xl max-h-[80vh] rounded-[2rem] border border-white/10 flex flex-col overflow-hidden shadow-2xl">
+            <div class="p-6 border-b border-white/10 flex justify-between items-center">
+                <h3 id="subjectTitle" class="text-2xl font-light tracking-wide italic">Subject Name</h3>
+                <button onclick="closeListModal()" class="p-2 hover:bg-white/10 rounded-full transition-all text-gray-400 hover:text-white">
+                    <i class="ph ph-x text-xl"></i>
+                </button>
+            </div>
+            <div id="programListContainer" class="p-4 overflow-y-auto custom-scrollbar flex flex-col gap-2">
+                </div>
+        </div>
+    </div>
+
+    <div id="codeModal" class="fixed inset-0 z-[110] hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
+        <div class="bg-[#0a0a0a] w-full max-w-5xl max-h-[90vh] rounded-[2rem] border border-white/10 flex flex-col overflow-hidden shadow-2xl">
+            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-white/5">
+                <h4 id="modalTitle" class="font-light tracking-wide text-lg">Program Title</h4>
+                <div class="flex gap-4">
+                    <button onclick="copyCode()" id="copyBtn" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-all flex items-center gap-2 text-sm font-light">
+                        <i class="ph ph-copy"></i> Copy Code
+                    </button>
+                    <button onclick="closeCodeModal()" class="p-2 hover:bg-red-500/20 rounded-full transition-all text-gray-400 hover:text-red-400">
+                        <i class="ph ph-x text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="overflow-y-auto p-6 custom-scrollbar text-sm font-mono">
+                <pre><code id="codeArea" class="language-latex line-numbers"></code></pre>
+            </div>
+        </div>
+    </div>
+
+    <script src="data/latex.js"></script>
+    <script src="data/ada.js"></script>
+    <script src="data/dbms.js"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-latex.min.js"></script>
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
