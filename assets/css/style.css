@@ -1,3 +1,25 @@
+/* Import standard font for regular text */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700;900&display=swap');
+
+/* Define your Custom Silver Editorial Font */
+@font-face {
+    font-family: 'Silver Editorial';
+    src: url('../fonts/SilverEditorial-Regular.ttf') format('truetype'); /* Change .ttf to .otf or .woff if needed */
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Silver Editorial';
+    src: url('../fonts/SilverEditorial-Italic.ttf') format('truetype');
+    font-weight: normal;
+    font-style: italic;
+}
+
+/* Utility classes to easily apply the font in HTML */
+.font-editorial {
+    font-family: 'Silver Editorial', serif;
+}
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;300;400;500;700;900&display=swap');
 
 .glass-effect {

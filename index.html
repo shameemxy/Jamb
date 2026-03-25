@@ -32,24 +32,24 @@
         </div>
     </nav>
 
-    <header class="relative h-[85vh] max-w-[95%] mx-auto mt-24 rounded-[2.5rem] flex flex-col items-center justify-center overflow-hidden border border-white/10 shadow-2xl">
+   <header class="relative h-[85vh] max-w-[95%] mx-auto mt-24 rounded-[2.5rem] flex flex-col items-center justify-center overflow-hidden border border-white/10 shadow-2xl">
         <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover opacity-90">
             <source src="assets/videos/Animated_Image_Request_Fulfilled.mp4" type="video/mp4">
         </video>
         <div class="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/60"></div>
         
         <div class="relative z-10 text-center px-6 mt-12">
-            <h2 class="text-5xl md:text-7xl font-extralight tracking-tight leading-tight text-white/95">
-                Too many Errors?<br>
-                Just <span class="italic font-light">Jamb</span> ts shi
+            <h2 class="text-5xl md:text-7xl font-editorial tracking-tight leading-tight text-white/95">
+                Still online clipboarding?<br>
+                Just <span class="font-editorial italic">Jamb</span> ts shi
             </h2>
+            
+            
             <a href="#subjects-section" class="inline-block mt-10 px-8 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-light hover:bg-white/20 transition-all">
-                Explore Subjects
+                Find Your Code
             </a>
         </div>
-    </header>
-
-    <main id="subjects-section" class="max-w-[95%] mx-auto px-6 py-32">
+    </header> <main id="subjects-section" class="max-w-[95%] mx-auto px-6 py-32">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div onclick="openSubject('ada')" class="subject-card group cursor-pointer relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -113,9 +113,61 @@
     <script src="data/latex.js"></script>
     <script src="data/ada.js"></script>
     <script src="data/dbms.js"></script>
+    <script src="data/mc.js"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-latex.min.js"></script>
     <script src="assets/js/app.js"></script>
+
+    <section class="max-w-[95%] mx-auto px-6 py-24 border-t border-white/10 mt-12 relative z-10 flex flex-col items-center">
+        <div id="promoContainer" class="w-full max-w-2xl text-center transition-all duration-500">
+            <h3 class="text-4xl md:text-5xl font-editorial text-white mb-4">Unlock Premium</h3>
+            <p class="text-gray-400 font-light text-sm mb-8">Enter your access code for exclusive features.</p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <input type="text" id="promoInput" placeholder="Enter promo code..." class="w-full sm:w-2/3 bg-white/5 border border-white/10 rounded-full px-6 py-4 text-white font-light focus:outline-none focus:border-white/30 text-center sm:text-left text-lg">
+                <button onclick="checkPromo()" class="w-full sm:w-auto px-8 py-4 rounded-full bg-white text-black font-medium hover:bg-gray-200 transition-all">
+                    Authenticate
+                </button>
+            </div>
+            <p id="promoError" class="mt-4 text-red-400 text-sm font-light h-5 opacity-0 transition-opacity">Invalid code.</p>
+        </div>
+
+        <div id="promoReveal" class="hidden w-full max-w-2xl text-center flex-col items-center animate-fade-in">
+            <img src="assets/images/idmaadg" alt="Saif Meme" class="w-full max-w-md rounded-[2rem] shadow-2xl mb-8 border border-white/10">
+            <h3 class="text-3xl md:text-4xl font-editorial text-white mb-2">Eeda ella free machu.</h3>
+        </div>
+    </section>
+
+    <section class="max-w-[95%] mx-auto px-6 py-32 border-t border-white/5 relative z-10 text-center bg-black/20 rounded-[3rem] my-12">
+        <h3 class="text-2xl text-gray-500 font-light mb-8 uppercase tracking-widest text-sm">When the code breaks</h3>
+        
+        <div class="min-h-[120px] flex items-center justify-center mb-8">
+            <p id="excuseDisplay" class="text-3xl md:text-5xl font-editorial italic text-white/90 transition-all duration-300">
+                "It worked perfectly on my machine."
+            </p>
+        </div>
+
+        <button onclick="generateExcuse()" class="px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-light hover:bg-white/10 hover:border-white/30 transition-all">
+            Generate Excuse
+        </button>
+    </section>
+
+    <section class="max-w-[95%] mx-auto px-6 py-24 border-t border-white/10 relative z-10 text-center flex flex-col items-center">
+        <h3 class="text-4xl md:text-6xl font-editorial text-white mb-6">Vibe Check</h3>
+        <p class="text-gray-400 font-light text-lg mb-10 max-w-xl">Who is your academic soul-faculty? Let the algorithm check your Jathaka.</p>
+        
+        <a href="soul-teacher.html" class="px-10 py-5 rounded-full bg-gradient-to-r from-white/10 to-white/5 border border-white/20 text-white font-medium hover:from-white/20 hover:to-white/10 transition-all shadow-lg hover:shadow-white/5 text-lg">
+            Find Your Soul Teacher
+        </a>
+    </section>
+
+   <footer class="w-full pb-6 pt-12 flex justify-center relative z-10">
+        <a href="barasorailla.html" class="px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full flex items-center gap-2 hover:bg-white/10 hover:border-white/30 transition-all group cursor-pointer">
+            <span class="text-gray-500 text-sm font-light group-hover:text-gray-300 transition-colors">brought to you by</span>
+            <span class="font-editorial italic text-white text-lg tracking-wide group-hover:text-red-500 transition-colors duration-500">barasorailla & Co</span>
+        </a>
+    </footer>
+    
 </body>
 </html>

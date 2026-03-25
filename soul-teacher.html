@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vibe Check | Jamb</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <style>body { background-color: #050505; }</style>
+</head>
+<body class="text-white min-h-screen flex flex-col selection:bg-white/20 overflow-x-hidden">
+
+    <nav class="w-full pt-8 px-8 absolute top-0 z-50">
+        <a href="index.html" class="text-gray-400 hover:text-white transition-colors text-sm font-light tracking-wide flex items-center gap-2">
+            ← Back to Jamb
+        </a>
+    </nav>
+
+    <main class="flex-grow flex flex-col items-center justify-center px-6 relative z-10">
+        
+        <div id="startState" class="text-center transition-all duration-500 w-full max-w-md">
+            <h1 class="text-5xl md:text-7xl font-editorial text-white mb-6">Vibe Check</h1>
+            <p class="text-gray-400 font-light text-lg mb-8">Find out which faculty member matches your kahani.</p>
+            
+            <div class="mb-8 w-full relative">
+                <input type="text" id="studentInput" placeholder="Enter your Name or USN..." autocomplete="off" class="w-full bg-white/5 border border-white/10 rounded-full px-6 py-4 text-white font-light focus:outline-none focus:border-white/30 text-center text-lg placeholder-gray-600 transition-colors">
+                <p id="inputError" class="text-red-400 text-sm font-light mt-3 h-4 opacity-0 transition-opacity">Don't be shy, tell us who you are.</p>
+            </div>
+
+            <button onclick="revealSoulTeacher()" class="w-full sm:w-auto px-12 py-5 rounded-full bg-white text-black font-medium hover:bg-gray-200 transition-all text-lg shadow-[0_0_40px_rgba(255,255,255,0.2)]">
+                Check my jathaka
+            </button>
+        </div>
+
+        <div id="loadingState" class="hidden text-center flex-col items-center">
+            <div class="w-16 h-16 border-4 border-white/10 border-t-white rounded-full animate-spin mb-8"></div>
+            <p class="text-xl font-editorial italic text-gray-300 animate-pulse">Analyzing attendance records...</p>
+        </div>
+
+        <div id="revealState" class="hidden text-center flex-col items-center animate-fade-in w-full max-w-4xl">
+            <p id="resultGreeting" class="text-sm text-gray-500 uppercase tracking-widest mb-8">Your Academic Soul-faculty is</p>
+            
+            <img id="resultImg" src="" alt="Teacher" class="w-48 h-48 md:w-64 md:h-64 rounded-full object-cover border border-white/20 mb-8 shadow-2xl">
+            
+            <h2 id="resultName" class="text-6xl md:text-8xl font-editorial text-white mb-4"></h2>
+            
+            <p id="resultSubject" class="text-lg md:text-xl font-light text-gray-400"></p>
+
+            <button onclick="location.reload()" class="mt-16 px-6 py-2 rounded-full border border-white/20 text-sm font-light hover:bg-white/10 transition-all text-gray-400 hover:text-white">
+                Try Again
+            </button>
+        </div>
+
+    </main>
+
+    <script>
+        const teachers = [
+            { 
+                name: "Dr. Sharmila Kumari", 
+                subject: "Head of Department", 
+                image: "assets/images/prof.sharmila.jpg" 
+            },
+            { 
+                name: "Prof. Avvanhi", 
+                subject: "DBMS", 
+                image: "assets/images/prof.avvanhi.jpg" 
+            },
+            { 
+                name: "Prof. Ramzeela", 
+                subject: "Bio/Latex", 
+                image: "assets/images/prof.ramzeela.jpg" 
+            },
+            { 
+                name: "Prof. Divya", 
+                subject: "DBMS", 
+                image: "assets/images/prof.divya.jpg" 
+            },
+            { 
+                name: "Prof. Saifuddin", 
+                subject: "Microcontrollers", 
+                image: "assets/images/prof.saifuddin.jpg" 
+            },
+            { 
+                name: "Prof. Hafeez", 
+                subject: "GT", 
+                image: "assets/images/prof.hafeez.jpg" 
+            },
+            { 
+                name: "Prof. Vaishnavi", 
+                subject: "Data Structures", 
+                image: "assets/images/prof.vaishnavi.jpg" 
+            },
+            { 
+                name: "Prof. Faizal", 
+                subject: "Hustlers University", 
+                image: "assets/images/prof.faizal.jpg" 
+            }
+        ];
+
+        function revealSoulTeacher() {
+            // 1. Validate Input
+            const studentInput = document.getElementById('studentInput').value.trim();
+            const inputError = document.getElementById('inputError');
+
+            if (!studentInput) {
+                inputError.style.opacity = '1';
+                return; // Stop execution if empty
+            }
+            
+            inputError.style.opacity = '0'; // Hide error if valid
+
+            // 2. Setup Transitions
+            const start = document.getElementById('startState');
+            const loading = document.getElementById('loadingState');
+            const reveal = document.getElementById('revealState');
+            const greeting = document.getElementById('resultGreeting');
+
+            // Hide Start, Show Loading
+            start.classList.add('hidden');
+            loading.classList.remove('hidden');
+            loading.classList.add('flex');
+
+            // Wait 2.5 seconds for dramatic effect
+            setTimeout(() => {
+                const randomTeacher = teachers[Math.floor(Math.random() * teachers.length)];
+                
+                document.getElementById('resultImg').src = randomTeacher.image;
+                document.getElementById('resultName').innerText = randomTeacher.name;
+                document.getElementById('resultSubject').innerText = randomTeacher.subject;
+                
+                // Personalize the text based on what they typed
+                greeting.innerText = `${studentInput}'s Academic Soulmate is`;
+
+                // Hide Loading, Show Reveal
+                loading.classList.remove('flex');
+                loading.classList.add('hidden');
+                reveal.classList.remove('hidden');
+                reveal.classList.add('flex');
+            }, 2500); 
+        }
+    </script>
+</body>
+</html>

@@ -2,8 +2,8 @@
 const subjectDatabase = {
     latex: typeof LATEX_PROGRAMS !== 'undefined' ? LATEX_PROGRAMS : [],
     ada: typeof ADA_PROGRAMS !== 'undefined' ? ADA_PROGRAMS : [],
-    dbms: typeof DBMS_PROGRAMS !== 'undefined' ? DBMS_PROGRAMS : [], // Ready for your DBMS data
-    mc: []   // Ready for your MC data
+    dbms: typeof DBMS_PROGRAMS !== 'undefined' ? DBMS_PROGRAMS : [], 
+    mc: typeof MC_PROGRAMS !== 'undefined' ? MC_PROGRAMS : [] 
 };
 
 // UI Elements
@@ -88,4 +88,58 @@ function copyCode() {
             copyBtn.classList.remove('text-green-400', 'border-green-400/30');
         }, 2000);
     });
+}
+
+// ==========================================
+// THE BACK BENCH LOGIC (INDEX.HTML)
+// ==========================================
+
+// 1. Promo Code Dramatic Reveal
+function checkPromo() {
+    const input = document.getElementById('promoInput').value.trim().toLowerCase();
+    const container = document.getElementById('promoContainer');
+    const reveal = document.getElementById('promoReveal');
+    const errorMsg = document.getElementById('promoError');
+    
+    if (input === 'saif10') {
+        // Hide the input container smoothly
+        container.style.opacity = '0';
+        setTimeout(() => {
+            container.classList.add('hidden');
+            // Show the massive GIF reveal
+            reveal.classList.remove('hidden');
+            reveal.classList.add('flex');
+        }, 500);
+    } else if (input === '') {
+        errorMsg.style.opacity = '0';
+    } else {
+        errorMsg.style.opacity = '1';
+    }
+}
+
+// 2. Blame Generator
+const excuses = [
+    "Adnaan ate my code.",
+    "Kashmiri ifaaz must have touched my keyboard.",
+    "I only do trading, no coding.",
+    "I think the lab computers have a virus.",
+    "I forgot a semicolon. I'm dropping out of college.",
+    "It's hardware issue, sir. Low quality samaan",
+    "Shayyu scam cheydh, ini output kittan kazhiyilla",
+    "Coding aileng endho? itt paroge ullo."
+];
+
+function generateExcuse() {
+    const display = document.getElementById('excuseDisplay');
+    const randomExcuse = excuses[Math.floor(Math.random() * excuses.length)];
+    
+    // Quick fade out and snap back in
+    display.style.opacity = 0;
+    display.style.transform = 'translateY(10px)';
+    
+    setTimeout(() => {
+        display.innerText = `"${randomExcuse}"`;
+        display.style.opacity = 1;
+        display.style.transform = 'translateY(0)';
+    }, 300);
 }

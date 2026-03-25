@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>??? | Jamb</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { 
+            background-color: #000; 
+            overflow: hidden; 
+        }
+
+        /* Background image */
+        .background {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background-image: url('assets/images/JambBckgrnd6.jpg');
+            background-size: cover; background-position: center;
+            filter: grayscale(100%) contrast(125%);
+            z-index: 0; 
+        }
+        
+        /* The Glitch/Flicker Animation */
+        .flicker { animation: flicker 4s infinite; }
+        @keyframes flicker {
+            0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+            20%, 22%, 24%, 55% { opacity: 0.2; }
+        }
+
+        /* The TV Static/Noise Overlay */
+        .noise {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 50; opacity: 0.04;
+            background-image: url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
+        }
+    </style>
+</head>
+<body class="text-white h-screen flex flex-col items-center justify-center relative selection:bg-red-900/30">
+    
+    <div class="noise"></div>
+
+    <a href="index.html" class="absolute top-8 left-8 text-gray-700 hover:text-red-600 transition-colors text-[10px] tracking-[0.4em] uppercase font-mono z-20">
+        [ ESCAPE ]
+    </a>
+
+    <div class="relative z-10 flex flex-col items-center flicker">
+        <img src="assets/images/barasorailla-music.png" alt="Barasorailla" class="w-64 md:w-96 filter grayscale contrast-125 drop-shadow-[0_0_15px_rgba(255,255,255,0.1)]">
+    </div>
+
+    <div class="absolute bottom-12 flex flex-col items-center gap-3 z-10">
+        <div class="w-1.5 h-1.5 bg-red-600 rounded-full animate-ping"></div>
+        <p class="text-red-600/40 text-[8px] md:text-[10px] tracking-[0.8em] uppercase font-mono">Operations Imminent</p>
+    </div>
+
+</body>
+</html>
