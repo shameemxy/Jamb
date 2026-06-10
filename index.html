@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jamb</title>
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#050505">
+    
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <link rel="stylesheet" href="assets/css/style.css">
@@ -24,11 +27,15 @@
     <nav class="fixed top-0 w-full z-50 pt-6 pb-2 transition-all duration-300" id="navbar">
         <div class="max-w-[95%] mx-auto px-6 py-4 flex justify-between items-center bg-black/40 backdrop-blur-md border border-white/10 rounded-full">
             <h1 class="text-xl font-light tracking-widest italic pl-2">Jamb</h1>
-            <div class="flex gap-8 text-sm font-light text-gray-400 pr-4">
-    <a href="#subjects-section" class="hover:text-white transition-colors">Subjects</a>
-    <a href="coming-soon.html" class="hover:text-white transition-colors">Assignments</a>
-    <a href="coming-soon.html" class="hover:text-white transition-colors">Archive</a>
-</div>
+            <div class="flex gap-8 text-sm font-light text-gray-400 pr-4 items-center">
+                <a href="#subjects-section" class="hover:text-white transition-colors hidden sm:block">Subjects</a>
+                <a href="coming-soon.html" class="hover:text-white transition-colors hidden sm:block">Assignments</a>
+                <a href="coming-soon.html" class="hover:text-white transition-colors">Archive</a>
+                
+                <button id="installAppBtn" class="hidden px-4 py-1.5 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all flex items-center gap-2 border border-white/10">
+                    <i class="ph ph-download-simple"></i> Install App
+                </button>
+            </div>
         </div>
     </nav>
 
@@ -44,12 +51,13 @@
                 Just <span class="font-editorial italic">Jamb</span> ts shi
             </h2>
             
-            
             <a href="#subjects-section" class="inline-block mt-10 px-8 py-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-sm font-light hover:bg-white/20 transition-all">
                 Find Your Code
             </a>
         </div>
-    </header> <main id="subjects-section" class="max-w-[95%] mx-auto px-6 py-32">
+    </header> 
+    
+    <main id="subjects-section" class="max-w-[95%] mx-auto px-6 py-32">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div onclick="openSubject('ada')" class="subject-card group cursor-pointer relative overflow-hidden">
                 <div class="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -87,25 +95,34 @@
                 </button>
             </div>
             <div id="programListContainer" class="p-4 overflow-y-auto custom-scrollbar flex flex-col gap-2">
-                </div>
+            </div>
         </div>
     </div>
 
     <div id="codeModal" class="fixed inset-0 z-[110] hidden bg-black/90 backdrop-blur-md flex items-center justify-center p-4 opacity-0 transition-opacity duration-300">
-        <div class="bg-[#0a0a0a] w-full max-w-5xl max-h-[90vh] rounded-[2rem] border border-white/10 flex flex-col overflow-hidden shadow-2xl">
-            <div class="p-5 border-b border-white/10 flex justify-between items-center bg-white/5">
-                <h4 id="modalTitle" class="font-light tracking-wide text-lg">Program Title</h4>
-                <div class="flex gap-4">
-                    <button onclick="copyCode()" id="copyBtn" class="px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-all flex items-center gap-2 text-sm font-light">
-                        <i class="ph ph-copy"></i> Copy Code
+        <div class="bg-[#0a0a0a] w-full max-w-5xl h-[85vh] rounded-[2rem] border border-white/10 flex flex-col overflow-hidden shadow-2xl">
+            <div class="p-4 sm:p-5 border-b border-white/10 flex justify-between items-center bg-white/5 relative z-20">
+                <h4 id="modalTitle" class="font-light tracking-wide text-sm sm:text-lg text-white truncate max-w-[40%]">Program Title</h4>
+                <div class="flex gap-2 sm:gap-4">
+                    <button onclick="toggleGuide()" id="guideBtn" class="px-3 sm:px-4 py-2 bg-purple-500/20 hover:bg-purple-500/30 text-purple-300 rounded-full transition-all flex items-center gap-2 text-xs sm:text-sm font-light">
+                        <i class="ph ph-terminal-window"></i> <span id="guideBtnText">Output Guide</span>
+                    </button>
+                    <button onclick="copyCode()" id="copyBtn" class="px-3 sm:px-4 py-2 bg-white/10 hover:bg-white/20 rounded-full transition-all flex items-center gap-2 text-xs sm:text-sm font-light text-white">
+                        <i class="ph ph-copy"></i> <span class="hidden sm:inline">Copy Code</span>
                     </button>
                     <button onclick="closeCodeModal()" class="p-2 hover:bg-red-500/20 rounded-full transition-all text-gray-400 hover:text-red-400">
                         <i class="ph ph-x text-xl"></i>
                     </button>
                 </div>
             </div>
-            <div class="overflow-y-auto p-6 custom-scrollbar text-sm font-mono">
-                <pre><code id="codeArea" class="language-latex line-numbers"></code></pre>
+            <div class="relative flex-grow overflow-hidden bg-[#050505]">
+                <div id="codeView" class="absolute inset-0 overflow-y-auto p-6 custom-scrollbar text-sm font-mono transition-transform duration-300 transform translate-x-0">
+                    <pre><code id="codeArea" class="language-clike line-numbers"></code></pre>
+                </div>
+                <div id="guideView" class="absolute inset-0 overflow-y-auto p-8 custom-scrollbar bg-black/40 transition-transform duration-300 transform translate-x-full">
+                    <div id="extraInfoArea" class="text-sm font-light text-gray-300 leading-relaxed max-w-3xl mx-auto prose prose-invert">
+                        </div>
+                </div>
             </div>
         </div>
     </div>
@@ -116,7 +133,9 @@
     <script src="data/mc.js"></script>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-c.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-latex.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-sql.min.js"></script>
     <script src="assets/js/app.js"></script>
 
     <section class="max-w-[95%] mx-auto px-6 py-24 border-t border-white/10 mt-12 relative z-10 flex flex-col items-center">
@@ -134,7 +153,7 @@
         </div>
 
         <div id="promoReveal" class="hidden w-full max-w-2xl text-center flex-col items-center animate-fade-in">
-            <img src="assets/images/idmaadg" alt="Saif Meme" class="w-full max-w-md rounded-[2rem] shadow-2xl mb-8 border border-white/10">
+            <img src="assets/images/idmaadg.gif" alt="Saif Meme" class="w-full max-w-md rounded-[2rem] shadow-2xl mb-8 border border-white/10">
             <h3 class="text-3xl md:text-4xl font-editorial text-white mb-2">Eeda ella free machu.</h3>
         </div>
     </section>
@@ -163,11 +182,33 @@
     </section>
 
    <footer class="w-full pb-6 pt-12 flex justify-center relative z-10">
-        <a href="barasorailla.html" class="px-6 py-3 bg-white/5 backdrop-blur-md border border-white/10 rounded-full flex items-center gap-2 hover:bg-white/10 hover:border-white/30 transition-all group cursor-pointer">
-            <span class="text-gray-500 text-sm font-light group-hover:text-gray-300 transition-colors">brought to you by</span>
-            <span class="font-editorial italic text-white text-lg tracking-wide group-hover:text-red-500 transition-colors duration-500">barasorailla & Co</span>
-        </a>
+        <p class="text-gray-500 text-sm font-light">&copy; 2024 Jamb. All rights reserved.</p>
     </footer>
-    
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('sw.js').catch(err => console.log('SW fail: ', err));
+            });
+        }
+        let deferredPrompt;
+        const installBtn = document.getElementById('installAppBtn');
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            installBtn.classList.remove('hidden');
+        });
+        installBtn.addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                if (outcome === 'accepted') installBtn.classList.add('hidden');
+                deferredPrompt = null;
+            }
+        });
+        window.addEventListener('appinstalled', () => {
+            installBtn.classList.add('hidden');
+        });
+    </script>
 </body>
 </html>

@@ -34,7 +34,9 @@ void main() {
         cost[a][b]=cost[b][a]=999;
     }
     printf("\\nMinimum cost=%d\\n",min_cost);
-}`
+}`,
+        manualSteps: `**How to solve manually:**\n1. List all edges in the graph and sort them in ascending order of their weights.\n2. Pick the edge with the smallest weight.\n3. Check if adding this edge forms a cycle with the edges already selected. (If it connects two nodes already in the same set, it forms a cycle).\n4. If no cycle is formed, include it in the spanning tree.\n5. Repeat steps 2-4 until you have exactly (V - 1) edges in the tree (where V is the number of vertices).`,
+        ioData: `**Expected Input & Output:**\nEnter the no. of vertices: 4\nEnter the cost matrix:\n0 2 999 6\n2 0 3 8\n999 3 0 5\n6 8 5 0\n\nThe edges of spanning tree are:\nEdge 1  (1->2)=2\nEdge 2  (2->3)=3\nEdge 3  (3->4)=5\n\nMinimum cost=10`
     },
     {
         title: "2. Prim's Algorithm",
@@ -69,7 +71,9 @@ void main() {
         cost[a][b]=cost[b][a]=999;
     }
     printf("\\n Minimun cost=%d",mincost);
-}`
+}`,
+        manualSteps: `**How to solve manually:**\n1. Start with any random vertex (usually vertex 1) and mark it as visited.\n2. Look at all edges connecting the currently visited vertices to unvisited vertices.\n3. Pick the edge with the minimum weight and add the new vertex to the visited set.\n4. Repeat steps 2-3 until all vertices are visited (i.e., you have V-1 edges).\n5. The sum of the selected edges is the minimum cost.`,
+        ioData: `**Expected Input & Output:**\nEnter the number of nodes: 4\nEnter the adjacency matrix:\n0 2 999 6\n2 0 3 8\n999 3 0 5\n6 8 5 0\n\nEdge 1:(1 2) cost:2\nEdge 2:(2 3) cost:3\nEdge 3:(3 4) cost:5\n\nMinimum cost=10`
     },
     {
         title: "3a. Floyd's Algorithm",
@@ -109,7 +113,9 @@ int main() {
     };
     floydWarshall(graph);
     return 0;
-}`
+}`,
+        manualSteps: `**How to solve manually:**\n1. Create an initial matrix (D0) representing the direct distances between nodes. Use infinity (INF) for non-adjacent nodes.\n2. Iterate through each vertex k (from 1 to V). k acts as an intermediate node.\n3. For each matrix D(k), update the distance between every pair (i, j) using the formula:\n   D(i, j) = min( D(i, j), D(i, k) + D(k, j) )\n4. The final matrix D(V) contains the shortest paths between all pairs of vertices.`,
+        ioData: `**Expected Output (Hardcoded Input):**\nShortest distances between every pair of vertices:\n0       9       3       4\n2       0       5       6\n7       7       0       1\n6       15      9       0`
     },
     {
         title: "3b. Warshall's Algorithm",
@@ -144,7 +150,9 @@ void main() {
             printf("%d ",p[i][j]);
         printf("\\n");
     }
-}`
+}`,
+        manualSteps: `**How to solve manually:**\n1. Create the initial boolean adjacency matrix R(0). If there is an edge from i to j, put 1, else 0.\n2. For each intermediate node k (from 1 to V), update the matrix.\n3. The rule is: R(i, j) becomes 1 if it was already 1, OR if both R(i, k) is 1 AND R(k, j) is 1.\n4. R(V) is the Transitive Closure (path matrix), showing if a path exists between any two nodes.`,
+        ioData: `**Expected Input & Output:**\nEnter the number of nodes: 4\nEnter the adjacency matrix:\n0 1 0 0\n0 0 0 1\n0 0 0 0\n1 0 1 0\n\nThe path matrix is shown below\n1 1 1 1\n1 1 1 1\n0 0 0 0\n1 1 1 1`
     },
     {
         title: "4. Dijkstra's Algorithm",
@@ -195,7 +203,9 @@ void dij(int source, int cost[20][20], int visited[20], int d[20], int n) {
             }
         }
     }
-}`
+}`,
+        manualSteps: `**How to solve manually:**\n1. Mark the source node distance as 0 and all other nodes as Infinity.\n2. Create an empty set of visited nodes.\n3. Pick the unvisited node with the smallest known distance (initially, the source).\n4. For the current node, examine all unvisited neighbors. Calculate their distance through the current node.\n5. If the newly calculated distance is smaller than the previously known distance, update it.\n6. Mark the current node as visited. Repeat until all nodes are visited.`,
+        ioData: `**Expected Input & Output:**\nEnter no. of vertices: 5\nEnter the cost adjacency matrix\n0 3 999 7 999\n3 0 4 2 999\n999 4 0 5 6\n7 2 5 0 4\n999 999 6 4 0\nEnter the source node: 1\n\nShortest path from 1 to 2 is 3\nShortest path from 1 to 3 is 7\nShortest path from 1 to 4 is 5\nShortest path from 1 to 5 is 9`
     },
     {
         title: "5. Topological Ordering",
@@ -256,7 +266,9 @@ void topological(int n,int a[10][10]) {
     printf("\\nTopological sequence is\\n");
     for(i=1;i<=n;i++)
         printf("%d\\t",t[i]);
-}`
+}`,
+        manualSteps: `**How to solve manually (Source Removal Method):**\n1. Calculate the in-degree (number of incoming edges) for all vertices.\n2. Find a vertex with an in-degree of 0 (no dependencies) and output it.\n3. Remove this vertex from the graph along with all its outgoing edges. This will decrease the in-degree of its neighbor vertices by 1.\n4. Repeat steps 2 and 3 until the graph is empty.`,
+        ioData: `**Expected Input & Output:**\nEnter the number of nodes: 5\nEnter the adjacency matrix\n0 0 1 0 0\n0 0 1 0 0\n0 0 0 1 1\n0 0 0 0 1\n0 0 0 0 0\n\nThe adjacency matirx is:\n0 0 1 0 0 \n0 0 1 0 0 \n0 0 0 1 1 \n0 0 0 0 1 \n0 0 0 0 0 \n\nTopological sequence is\n2 1 3 4 5`
     },
     {
         title: "6. 0/1 Knapsack (Dynamic Prog.)",
@@ -289,7 +301,9 @@ int knapsack(int i,int m) {
 }
 int max(int a,int b) {
     if(a>b) return a; else return b;
-}`
+}`,
+        manualSteps: `**How to solve manually:**\n1. Create a table V of size (n+1) x (W+1) where n is objects and W is total capacity.\n2. Initialize row 0 and column 0 to zeros.\n3. For each object i and capacity w:\n   a) If the object's weight is > w, copy the value from above: V[i][w] = V[i-1][w].\n   b) Otherwise, take the MAX of: (Not including it: V[i-1][w]) OR (Including it: Profit[i] + V[i-1][w - Weight[i]]).\n4. The bottom right cell V[n][W] is the maximum profit.`,
+        ioData: `**Expected Input & Output:**\nEnter no. of objects: 4\nEnter the weights:\n2 1 3 2\nEnter the profits:\n12 10 20 15\nEnter the knapsack capacity: 5\n\nThe optimal soluntion is: 37`
     },
     {
         title: "7. Greedy Knapsack",
@@ -367,7 +381,9 @@ int main() {
     // Solve the knapsack problem
     knapsack(n, c, p, w);
     return 0;
-}`
+}`,
+        manualSteps: `**How to solve manually (Fractional/Greedy):**\n1. Calculate the Profit-to-Weight ratio (P/W) for all objects.\n2. Sort the objects in descending order of their P/W ratio.\n3. Add objects sequentially to the knapsack until it is full.\n4. If the next object cannot fit entirely, take a fraction of it that fills the remaining capacity.\n*(Note: The provided C code actually performs 0/1 DP reconstruction. Follow your lab instructor's exact code).*`,
+        ioData: `**Expected Input & Output:**\nEnter the number of objects: 3\nEnter the capacity of the knapsack: 20\nEnter the profit for each of the 3 objects:\n25 24 15\nEnter the weight for each of the 3 objects:\n18 15 10\n\nOptimal Solution: 39\nThe objects picked up into the knapsack are: 3 2`
     },
     {
         title: "8. Subset Sum (Backtracking)",
@@ -411,7 +427,9 @@ void subset(int cs,int k,int r) {
         x[k]=0;
         subset(cs,k+1,r-w[k]);
     }
-}`
+}`,
+        manualSteps: `**How to solve manually:**\n1. Sort the given set of numbers in ascending order.\n2. Create a state-space tree. Start with an empty subset.\n3. For each number, branch out in two ways: INCLUDE the number, or EXCLUDE the number.\n4. Keep a running total of the current subset sum. Also, keep track of the remaining possible sum from unused numbers.\n5. Backtrack (prune the tree) if the current sum exceeds the target, OR if the current sum + remaining total is less than the target.\n6. Print the subset when the current sum equals the target.`,
+        ioData: `**Expected Input & Output:**\nEnter the no. of elements: 5\nEnter the elements in ascending order:\n1 2 5 6 8\nEnter the sum: 9\n\nSubset 1\n1       2       6\n\nSubset 2\n1       8`
     },
     {
         title: "9. Selection Sort",
@@ -472,7 +490,9 @@ int main() {
     // Free the dynamically allocated memory
     free(arr);
     return 0;
-}`
+}`,
+        manualSteps: `**How to solve manually:**\n1. Divide the array into a "sorted" part (left) and an "unsorted" part (right). Initially, sorted is empty.\n2. Scan the unsorted part to find the smallest number.\n3. Swap this smallest number with the first number of the unsorted part.\n4. Move the boundary of the sorted part one element to the right.\n5. Repeat until the unsorted part is empty.`,
+        ioData: `**Expected Input & Output:**\nenter size of array: 5\nRandom numbers for n = 5:\n843 219 900 12 450 \n\nTime taken to sort for n = 5: 0.000001 seconds\n\nSorted numbers for n = 5:\n12 219 450 843 900`
     },
     {
         title: "10. Quick Sort",
@@ -543,7 +563,9 @@ int main() {
     // Free the dynamically allocated memory
     free(arr);
     return 0;
-}`
+}`,
+        manualSteps: `**How to solve manually:**\n1. Pick an element as a pivot (usually the first, last, or middle element).\n2. Reorder the array so that all elements smaller than the pivot come before it, and all elements greater come after it (this is partitioning).\n3. After partitioning, the pivot is in its final sorted position.\n4. Recursively apply the above steps to the sub-array of smaller elements and the sub-array of greater elements.`,
+        ioData: `**Expected Input & Output:**\nenter size of array: 5\nRandom numbers for n = 5:\n672 105 889 33 501 \n\nTime taken to sort for n = 5: 0.000001 seconds\n\nSorted numbers for n = 5:\n33 105 501 672 889`
     },
     {
         title: "11. Merge Sort",
@@ -629,7 +651,9 @@ int main() {
     // Free the dynamically allocated memory
     free(arr);
     return 0;
-}`
+}`,
+        manualSteps: `**How to solve manually:**\n1. Divide the unsorted array down the middle into two halves.\n2. Keep dividing the sub-arrays until each sub-array has only 1 element (an array of 1 element is inherently sorted).\n3. Merge the single elements back together in pairs, comparing them to ensure they are sorted.\n4. Keep merging the sorted sub-arrays until you are left with one completely sorted array.`,
+        ioData: `**Expected Input & Output:**\nenter size of array: 5\nRandom numbers for n = 5:\n991 22 45 611 120\n\nTime taken to sort for n = 5: 0.000001 seconds\n\nSorted numbers for n = 5:\n22 45 120 611 991`
     },
     {
         title: "12. N-Queen's Problem",
@@ -702,6 +726,8 @@ bool solveNQ() {
 int main() {
     solveNQ();
     return 0;
-}`
+}`,
+        manualSteps: `**How to solve manually:**\n1. Place the first queen in the first row, first column.\n2. Move to the next column and try to place the second queen in the first row.\n3. Check if it is safe (no other queen in the same row, column, or diagonal). If not safe, try the next row down.\n4. If you reach a column where no row is safe, BACKTRACK to the previous column and move that queen down one row.\n5. Repeat until N queens are placed safely.`,
+        ioData: `**Expected Output (Hardcoded N=4):**\n. . Q .\nQ . . .\n. . . Q\n. Q . .`
     }
 ];

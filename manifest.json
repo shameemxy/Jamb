@@ -1,0 +1,17 @@
+{
+  "name": "Jamb",
+  "short_name": "Jamb",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#050505",
+  "theme_color": "#050505",
+  "description": "PACE offline lab portal.",
+  "icons": [
+    {
+      "src": "assets/images/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
