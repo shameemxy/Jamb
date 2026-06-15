@@ -9,12 +9,24 @@ const subjectDatabase = {
 };
 
 let isCodeView = true;
+let isStealthMode = false;
+let isSelectMode = false;
+let currentSubject = "";
+let currentCodeString = "";
+let currentLangClass = "";
+
 const listModal = document.getElementById('programListModal');
 const codeModal = document.getElementById('codeModal');
 const programListContainer = document.getElementById('programListContainer');
 const subjectTitle = document.getElementById('subjectTitle');
 
+// Helper to escape HTML for raw rendering
+function escapeHtml(unsafe) {
+    return (unsafe || "").replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+}
+
 function openSubject(subjectKey) {
+    currentSubject = subjectKey;
     const programs = subjectDatabase[subjectKey];
     subjectTitle.innerText = subjectKey.toUpperCase() + " Programs";
     programListContainer.innerHTML = '';
@@ -22,21 +34,69 @@ function openSubject(subjectKey) {
     if (programs.length === 0) {
         programListContainer.innerHTML = `<p class="text-gray-500 font-light text-center py-8">Programs coming soon...</p>`;
     } else {
-        programs.forEach((prog) => {
+        programs.forEach((prog, index) => {
             const card = document.createElement('div');
-            card.className = "bg-white/5 border border-white/10 p-4 rounded-xl cursor-pointer hover:bg-white/10 hover:border-white/30 transition-all group flex justify-between items-center";
+            card.className = "bg-white/5 border border-white/10 p-3 rounded-xl flex justify-between items-center group transition-colors";
+            
+            // Checkbox for Condensed Print (Hidden by default)
             card.innerHTML = `
-                <span class="font-light tracking-wide text-gray-200 group-hover:text-white truncate pr-4">${prog.title}</span>
-                <i class="ph ph-code text-xl text-gray-500 group-hover:text-white transition-colors flex-shrink-0"></i>
+                <div class="flex items-center gap-4 w-full">
+                    <input type="checkbox" data-index="${index}" class="prog-checkbox hidden w-5 h-5 accent-purple-500 cursor-pointer shrink-0">
+                    <div class="flex-grow cursor-pointer flex justify-between items-center" onclick="openCodeViewer(${index}, '${subjectKey}')">
+                        <span class="font-light tracking-wide text-gray-200 group-hover:text-white truncate pr-4">${prog.title}</span>
+                        <i class="ph ph-code text-xl text-gray-500 group-hover:text-white transition-colors flex-shrink-0"></i>
+                    </div>
+                </div>
             `;
-            // Pass the data safely
-            card.onclick = () => openCodeViewer(prog, subjectKey);
             programListContainer.appendChild(card);
         });
     }
 
+    // Reset Selection Mode UI state every time a subject is opened
+    isSelectMode = false;
+    document.getElementById('selectBtn').classList.remove('hidden');
+    document.getElementById('selectAllBtn').classList.add('hidden');
+    document.getElementById('cancelSelectBtn').classList.add('hidden');
+    document.getElementById('selectModeTitle').classList.add('hidden');
+    document.getElementById('printFooter').classList.add('hidden');
+
     listModal.classList.remove('hidden');
     setTimeout(() => listModal.classList.remove('opacity-0'), 10);
+}
+
+function toggleSelectMode() {
+    isSelectMode = !isSelectMode;
+    const checkboxes = document.querySelectorAll('.prog-checkbox');
+    const selectBtn = document.getElementById('selectBtn');
+    const selectAllBtn = document.getElementById('selectAllBtn');
+    const cancelBtn = document.getElementById('cancelSelectBtn');
+    const title = document.getElementById('selectModeTitle');
+    const footer = document.getElementById('printFooter');
+
+    if (isSelectMode) {
+        checkboxes.forEach(cb => cb.classList.remove('hidden'));
+        selectBtn.classList.add('hidden');
+        selectAllBtn.classList.remove('hidden');
+        cancelBtn.classList.remove('hidden');
+        title.classList.remove('hidden');
+        footer.classList.remove('hidden');
+    } else {
+        checkboxes.forEach(cb => {
+            cb.classList.add('hidden');
+            cb.checked = false; // uncheck all on cancel
+        });
+        selectBtn.classList.remove('hidden');
+        selectAllBtn.classList.add('hidden');
+        cancelBtn.classList.add('hidden');
+        title.classList.add('hidden');
+        footer.classList.add('hidden');
+    }
+}
+
+function selectAllPrograms() {
+    const checkboxes = document.querySelectorAll('.prog-checkbox');
+    const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+    checkboxes.forEach(cb => cb.checked = !allChecked);
 }
 
 function closeListModal() {
@@ -44,56 +104,160 @@ function closeListModal() {
     setTimeout(() => listModal.classList.add('hidden'), 300);
 }
 
-function openCodeViewer(prog, subjectKey) {
-    // Populate Code
+function openCodeViewer(progIndex, subjectKey) {
+    const prog = subjectDatabase[subjectKey][progIndex];
     document.getElementById('modalTitle').innerText = prog.title;
-    const codeArea = document.getElementById('codeArea');
-    codeArea.textContent = prog.code;
+    
+    currentCodeString = prog.code; // Store for stealth toggling
     
     // Set highlighting language
     let lang = 'language-clike';
     if(subjectKey === 'latex') lang = 'language-latex';
     if(subjectKey === 'dbms') lang = 'language-sql';
-    codeArea.className = `${lang} line-numbers`;
+    currentLangClass = lang;
 
-    // Populate Guide
+    // Make sure stealth mode is OFF initially
+    if(isStealthMode) toggleStealthMode(); 
+    else renderNormalCode();
+
+    // Populate Guide & PDF Viewer
     const extraInfoArea = document.getElementById('extraInfoArea');
     let infoHTML = '';
     const formatText = (text) => text.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/\n/g, '<br>');
 
     if (prog.executionSteps) infoHTML += `<div class="mb-8 p-6 bg-white/5 rounded-xl border border-white/10">${formatText(prog.executionSteps)}</div>`;
     if (prog.manualSteps) infoHTML += `<div class="mb-8 p-6 bg-purple-500/10 rounded-xl border border-purple-500/20">${formatText(prog.manualSteps)}</div>`;
-    if (prog.ioData) infoHTML += `<div class="p-6 bg-black/50 rounded-xl border border-white/10 font-mono text-xs text-green-400">${formatText(prog.ioData)}</div>`;
+    if (prog.ioData) infoHTML += `<div class="mb-8 p-6 bg-black/50 rounded-xl border border-white/10 font-mono text-xs text-green-400">${formatText(prog.ioData)}</div>`;
     
+    // PDF Viewer Injection
+    if (prog.pdfPath) {
+        infoHTML += `
+        <div class="mt-8 border-t border-white/10 pt-8">
+            <div class="flex justify-between items-center mb-6">
+                <h5 class="text-white text-lg font-editorial tracking-wide">Compiled PDF Output</h5>
+                <a href="${prog.pdfPath}" download class="px-5 py-2 bg-green-500/20 hover:bg-green-500/30 text-green-400 border border-green-500/30 rounded-full text-xs transition-all flex items-center gap-2">
+                    <i class="ph ph-download-simple"></i> Download PDF
+                </a>
+            </div>
+            <div class="w-full h-[600px] border border-white/20 rounded-xl overflow-hidden bg-white">
+                <iframe src="${prog.pdfPath}#toolbar=0&navpanes=0&scrollbar=0" class="w-full h-full" frameborder="0"></iframe>
+            </div>
+        </div>`;
+    }
+
     if (infoHTML === '') {
         infoHTML = '<p class="text-center text-gray-500 mt-10">No specific guide required for this program.</p>';
     }
     extraInfoArea.innerHTML = infoHTML;
 
-    // Reset View to Code View
+    // Reset View
     isCodeView = true;
     updateToggleUI();
 
-    // Reset copy button
     const copyBtn = document.getElementById('copyBtn');
     copyBtn.innerHTML = '<i class="ph ph-copy"></i> <span class="hidden sm:inline">Copy Code</span>';
     copyBtn.classList.remove('text-green-400', 'border-green-400/30');
 
-    // Show Modal
     codeModal.classList.remove('hidden');
     setTimeout(() => codeModal.classList.remove('opacity-0'), 10);
-    Prism.highlightElement(codeArea);
 }
 
 function closeCodeModal() {
     codeModal.classList.add('opacity-0');
-    setTimeout(() => codeModal.classList.add('hidden'), 300);
+    setTimeout(() => {
+        codeModal.classList.add('hidden');
+        if(isStealthMode) toggleStealthMode(); // Reset stealth if closed
+    }, 300);
+}
+
+// ==========================================
+// STEALTH MODE & PRINTING
+// ==========================================
+
+function renderNormalCode() {
+    const codeArea = document.getElementById('codeArea');
+    codeArea.innerHTML = '';
+    codeArea.textContent = currentCodeString;
+    codeArea.className = `${currentLangClass} line-numbers font-mono`;
+    Prism.highlightElement(codeArea);
+}
+
+function renderStealthCode() {
+    const codeArea = document.getElementById('codeArea');
+    codeArea.className = "font-mono"; // Remove Prism classes
+    // Split code into lines and wrap each in a hoverable div
+    const lines = currentCodeString.split('\n');
+    codeArea.innerHTML = lines.map(line => `<div class="stealth-line">${escapeHtml(line) || ' '}</div>`).join('');
+}
+
+function toggleStealthMode() {
+    isStealthMode = !isStealthMode;
+    const btnText = document.getElementById('stealthBtnText');
+    const toggleBtn = document.getElementById('stealthToggleBtn');
+
+    if (isStealthMode) {
+        document.body.classList.add('stealth-active');
+        btnText.innerText = "Write Mode Off";
+        toggleBtn.classList.add('stealth-btn-active');
+        renderStealthCode();
+        // Force Code View to hide Output Guide while in stealth
+        if(!isCodeView) toggleGuide(); 
+    } else {
+        document.body.classList.remove('stealth-active');
+        btnText.innerText = "Write Mode On";
+        toggleBtn.classList.remove('stealth-btn-active');
+        renderNormalCode();
+    }
+}
+
+function printCondensed() {
+    const checkboxes = document.querySelectorAll('.prog-checkbox:checked');
+    if (checkboxes.length === 0) {
+        alert("Please select at least one program to generate a cheatsheet.");
+        return;
+    }
+
+    let printHTML = `
+    <html>
+    <head>
+        <title>Condensed Cheatsheet</title>
+        <style>
+            @page { margin: 10mm; }
+            body { font-family: monospace; font-size: 5pt; line-height: 1.2; color: #000; margin: 0; padding: 0; }
+            .program-block { margin-bottom: 80px; page-break-inside: avoid; }
+            h3 { font-size: 6pt; margin: 0 0 5px 0; border-bottom: 0.5px solid #000; padding-bottom: 2px; }
+            pre { margin: 0; white-space: pre-wrap; word-break: break-all; }
+        </style>
+    </head>
+    <body>`;
+
+    checkboxes.forEach(cb => {
+        let prog = subjectDatabase[currentSubject][cb.dataset.index];
+        printHTML += `
+            <div class="program-block">
+                <h3>${prog.title}</h3>
+                <pre>${escapeHtml(prog.code)}</pre>
+            </div>`;
+    });
+
+    printHTML += `</body></html>`;
+
+    // Open hidden window and trigger native browser print to PDF
+    let printWin = window.open('', '_blank');
+    printWin.document.write(printHTML);
+    printWin.document.close();
+    printWin.focus();
+    setTimeout(() => { 
+        printWin.print(); 
+    }, 250);
 }
 
 // ==========================================
 // TOGGLE GUIDE LOGIC
 // ==========================================
 function toggleGuide() {
+    if(isStealthMode) return; // Prevent switching to guide in stealth mode
+
     isCodeView = !isCodeView;
     updateToggleUI();
 }
@@ -133,44 +297,4 @@ function copyCode() {
             copyBtn.classList.remove('text-green-400', 'border-green-400/30');
         }, 2000);
     });
-}
-
-// ==========================================
-// PRANKS & EASTER EGGS
-// ==========================================
-function checkPromo() {
-    const input = document.getElementById('promoInput').value.trim().toLowerCase();
-    const error = document.getElementById('promoError');
-    const container = document.getElementById('promoContainer');
-    const reveal = document.getElementById('promoReveal');
-
-    if (input === 'saif10') {
-        error.style.opacity = '0';
-        container.classList.add('hidden');
-        reveal.classList.remove('hidden');
-        reveal.classList.add('flex');
-    } else {
-        error.style.opacity = '1';
-    }
-}
-
-const excuses = [
-    "It worked perfectly on my machine.",
-    "Did you try turning it off and on again?",
-    "It's a feature, not a bug.",
-    "The server must be down.",
-    "Must be a cache issue. Try hard refreshing.",
-    "I think someone changed the API.",
-    "You're holding it wrong."
-];
-
-function generateExcuse() {
-    const display = document.getElementById('excuseDisplay');
-    const randomExcuse = excuses[Math.floor(Math.random() * excuses.length)];
-    
-    display.style.opacity = '0';
-    setTimeout(() => {
-        display.innerText = `"${randomExcuse}"`;
-        display.style.opacity = '1';
-    }, 300);
 }
