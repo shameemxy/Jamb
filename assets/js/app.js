@@ -194,6 +194,7 @@ function toggleStealthMode() {
     isStealthMode = !isStealthMode;
     const btnText = document.getElementById('stealthBtnText');
     const toggleBtn = document.getElementById('stealthToggleBtn');
+    const stealthToast = document.getElementById('stealthToast');
 
     if (isStealthMode) {
         document.body.classList.add('stealth-active');
@@ -202,11 +203,26 @@ function toggleStealthMode() {
         renderStealthCode();
         // Force Code View to hide Output Guide while in stealth
         if(!isCodeView) toggleGuide(); 
+
+        // Show F11 Toast
+        stealthToast.classList.remove('hidden');
+        setTimeout(() => stealthToast.classList.remove('opacity-0'), 10);
+        
+        // Hide Toast after 4 seconds
+        setTimeout(() => {
+            stealthToast.classList.add('opacity-0');
+            setTimeout(() => stealthToast.classList.add('hidden'), 500);
+        }, 4000);
+
     } else {
         document.body.classList.remove('stealth-active');
         btnText.innerText = "Write Mode On";
         toggleBtn.classList.remove('stealth-btn-active');
         renderNormalCode();
+        
+        // Force hide toast if they toggle off early
+        stealthToast.classList.add('opacity-0');
+        setTimeout(() => stealthToast.classList.add('hidden'), 500);
     }
 }
 
