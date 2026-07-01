@@ -194,6 +194,7 @@ function toggleStealthMode() {
     isStealthMode = !isStealthMode;
     const btnText = document.getElementById('stealthBtnText');
     const toggleBtn = document.getElementById('stealthToggleBtn');
+    const stealthToast = document.getElementById('stealthToast');
 
     if (isStealthMode) {
         document.body.classList.add('stealth-active');
@@ -202,11 +203,30 @@ function toggleStealthMode() {
         renderStealthCode();
         // Force Code View to hide Output Guide while in stealth
         if(!isCodeView) toggleGuide(); 
+
+        // Show F11 Toast
+        if(stealthToast) {
+            stealthToast.classList.remove('hidden');
+            setTimeout(() => stealthToast.classList.remove('opacity-0'), 10);
+            
+            // Hide Toast after 4 seconds
+            setTimeout(() => {
+                stealthToast.classList.add('opacity-0');
+                setTimeout(() => stealthToast.classList.add('hidden'), 500);
+            }, 4000);
+        }
+
     } else {
         document.body.classList.remove('stealth-active');
         btnText.innerText = "Write Mode On";
         toggleBtn.classList.remove('stealth-btn-active');
         renderNormalCode();
+        
+        // Force hide toast if they toggle off early
+        if(stealthToast) {
+            stealthToast.classList.add('opacity-0');
+            setTimeout(() => stealthToast.classList.add('hidden'), 500);
+        }
     }
 }
 
@@ -297,4 +317,67 @@ function copyCode() {
             copyBtn.classList.remove('text-green-400', 'border-green-400/30');
         }, 2000);
     });
+}
+
+// ==========================================
+// STEALTH GLOBAL CLIPBOARD SHORTCUTS
+// ==========================================
+let stealthKeyBuffer = "";
+let stealthBufferTimeout;
+let stealthExecuteTimeout;
+
+document.addEventListener('keydown', (e) => {
+    // Ignore keys if they are just being held down, to prevent spamming the buffer
+    if (e.repeat) return;
+
+    // Only capture single character alphanumeric keys
+    if (e.key.length === 1 && /[a-z0-9]/i.test(e.key)) {
+        stealthKeyBuffer += e.key.toLowerCase();
+        
+        clearTimeout(stealthBufferTimeout);
+        clearTimeout(stealthExecuteTimeout); // Stop pending copy if user is still typing
+
+        stealthBufferTimeout = setTimeout(() => { stealthKeyBuffer = ""; }, 1500); // 1.5s overall typing window
+
+        // Look for the sequence: subject letter followed by numbers and an optional 'a' or 'b'
+        // Example matches: a1, a3a, l12
+        let match = stealthKeyBuffer.match(/(a|l|d|m)(\d{1,2}[a-z]?)$/);
+        
+        if (match) {
+            // Increased to 750ms so user has plenty of time to type the full code
+            stealthExecuteTimeout = setTimeout(() => {
+                let subjectMap = { 'a': 'ada', 'l': 'latex', 'd': 'dbms', 'm': 'mc' };
+                let subject = subjectMap[match[1]];
+                let progId = match[2]; // e.g. "3a" or "12"
+
+                let programs = subjectDatabase[subject];
+                if (programs) {
+                    // Find the exact program by checking if its title starts with the progId followed by a dot or space
+                    // e.g. "3a. Floyd's Algorithm" or "12. N-Queen's Problem"
+                    let targetProg = programs.find(p => p.title.toLowerCase().startsWith(progId + ".") || p.title.toLowerCase().startsWith(progId + " "));
+                    
+                    if (targetProg) {
+                        // Silently copy the code to clipboard
+                        navigator.clipboard.writeText(targetProg.code).then(() => {
+                            showStealthCopyToast(`${subject.toUpperCase()} ${progId.toUpperCase()} Copied`);
+                        });
+                        stealthKeyBuffer = ""; // Reset buffer after successful copy
+                    }
+                }
+            }, 750); 
+        }
+    }
+});
+
+function showStealthCopyToast(msg) {
+    let toast = document.getElementById('stealthCopyToast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'stealthCopyToast';
+        toast.className = "fixed bottom-10 right-10 bg-black/80 text-gray-500 px-4 py-2 rounded-lg text-xs font-mono border border-white/5 z-[300] transition-opacity duration-300 opacity-0 pointer-events-none";
+        document.body.appendChild(toast);
+    }
+    toast.innerText = msg;
+    toast.classList.remove('opacity-0');
+    setTimeout(() => toast.classList.add('opacity-0'), 2000);
 }

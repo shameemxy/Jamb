@@ -1,8 +1,7 @@
 const ADA_PROGRAMS = [
     {
         title: "1. Kruskal's Algorithm",
-        code: `// Program 1: Minimum Cost Spanning Tree using Kruskal's algorithm
-#include<stdio.h>
+        code: `#include<stdio.h>
 int ne=1,min_cost=0;
 void main() {
     int n,i,j,min,a,u,b,v,cost[20][20],parent[20];
@@ -40,8 +39,7 @@ void main() {
     },
     {
         title: "2. Prim's Algorithm",
-        code: `// Program 2: Minimum Cost Spanning Tree using Prim's algorithm
-#include<stdio.h>
+        code: `#include<stdio.h>
 int a,b,u,v,n,i,j,ne=1;
 int visited[10]={0},min,mincost=0,cost[10][10];
 void main() {
@@ -77,8 +75,7 @@ void main() {
     },
     {
         title: "3a. Floyd's Algorithm",
-        code: `// Program 3a: All-Pairs Shortest Paths problem using Floyd's algorithm
-#include <stdio.h>
+        code: `#include <stdio.h>
 #include <limits.h>
 #define V 4
 void floydWarshall(int graph[V][V]) {
@@ -119,8 +116,7 @@ int main() {
     },
     {
         title: "3b. Warshall's Algorithm",
-        code: `// Program 3b: Transitive closure using Warshall's algorithm
-#include <stdio.h>
+        code: `#include <stdio.h>
 int n,a[10][10],p[10][10];
 void path() {
     int i,j,k;
@@ -156,8 +152,7 @@ void main() {
     },
     {
         title: "4. Dijkstra's Algorithm",
-        code: `// Program 4: Shortest paths using Dijkstra's algorithm
-#include<stdio.h>
+        code: `#include<stdio.h>
 void dij(int, int [20][20], int [20], int [20], int);
 void main() {
     int i, j, n, visited[20], source, cost[20][20], d[20];
@@ -209,8 +204,7 @@ void dij(int source, int cost[20][20], int visited[20], int d[20], int n) {
     },
     {
         title: "5. Topological Ordering",
-        code: `// Program 5: Topological ordering of vertices in a given digraph
-#include<stdio.h>
+        code: `#include<stdio.h>
 void findindegree(int [10][10],int[10],int);
 void topological(int,int [10][10]);
 void main() {
@@ -272,8 +266,7 @@ void topological(int n,int a[10][10]) {
     },
     {
         title: "6. 0/1 Knapsack (Dynamic Prog.)",
-        code: `// Program 6: 0/1 Knapsack problem using Dynamic Programming
-#include<stdio.h>
+        code: `#include<stdio.h>
 #define MAX 50
 int p[MAX],w[MAX],n;
 int knapsack(int,int);
@@ -307,17 +300,13 @@ int max(int a,int b) {
     },
     {
         title: "7. Greedy Knapsack",
-        code: `// Program 7: Knapsack problems using greedy approximation
-#include <stdio.h>
+        code: `#include <stdio.h>
 #include <stdlib.h>
-// Function to find the maximum of two integers
 int max(int a, int b) {
     return (a > b) ? a : b;
 }
-// Function to solve the knapsack problem using dynamic programming
 void knapsack(int n, int c, int p[], int w[]) {
     int v[n+1][c+1];
-    // Build the DP table in bottom-up manner
     for (int i = 0; i <= n; i++) {
         for (int j = 0; j <= c; j++) {
             if (i == 0 || j == 0) {
@@ -329,9 +318,7 @@ void knapsack(int n, int c, int p[], int w[]) {
             }
         }
     }
-    // Print the optimal solution
     printf("Optimal Solution: %d\\n", v[n][c]);
-    // Print the items included in the knapsack
     printf("The objects picked up into the knapsack are: ");
     int i = n, j = c;
     while (i > 0) {
@@ -345,14 +332,12 @@ void knapsack(int n, int c, int p[], int w[]) {
 }
 int main() {
     int n, c;
-    // Input for number of objects
     printf("Enter the number of objects: ");
     scanf("%d", &n);
     if (n <= 0) {
         printf("The number of objects must be a positive integer.\\n");
         return 1;
     }
-    // Input for knapsack capacity
     printf("Enter the capacity of the knapsack: ");
     scanf("%d", &c);
     if (c <= 0) {
@@ -360,7 +345,6 @@ int main() {
         return 1;
     }
     int p[n], w[n];
-    // Input for profits
     printf("Enter the profit for each of the %d objects: \\n", n);
     for (int i = 0; i < n; i++) {
         scanf("%d", &p[i]);
@@ -369,7 +353,6 @@ int main() {
             return 1;
         }
     }
-    // Input for weights
     printf("Enter the weight for each of the %d objects: \\n", n);
     for (int i = 0; i < n; i++) {
         scanf("%d", &w[i]);
@@ -378,7 +361,6 @@ int main() {
             return 1;
         }
     }
-    // Solve the knapsack problem
     knapsack(n, c, p, w);
     return 0;
 }`,
@@ -387,8 +369,7 @@ int main() {
     },
     {
         title: "8. Subset Sum (Backtracking)",
-        code: `// Program 8: Subset sum equal to a given positive integer d
-#include<stdio.h>
+        code: `#include<stdio.h>
 void subset(int,int,int);
 int x[10],w[10],d,count=0;
 void main() {
@@ -433,11 +414,9 @@ void subset(int cs,int k,int r) {
     },
     {
         title: "9. Selection Sort",
-        code: `// Program 9: Selection Sort method and compute its time complexity
-#include <stdio.h>
+        code: `#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-// Function to perform selection sort
 void selectionSort(int arr[], int n) {
     int i, j, minIndex, temp;
     for (i = 0; i < n - 1; i++) {
@@ -447,13 +426,11 @@ void selectionSort(int arr[], int n) {
                 minIndex = j;
             }
         }
-        // Swap the found minimum element with the first element
         temp = arr[minIndex];
         arr[minIndex] = arr[i];
         arr[i] = temp;
     }
 }
-// Function to generate random numbers between 0 and 999
 int generateRandomNumber() {
     return rand() % 1000;
 }
@@ -461,7 +438,6 @@ int main() {
     int n;
     printf("enter size of array: ");
     scanf("%d",&n);
-    // Allocate memory for the array
     int* arr = (int*)malloc(n * sizeof(int));
     
     srand(time(NULL));
@@ -471,23 +447,16 @@ int main() {
         printf("%d ", arr[i]);
     }
     printf("\\n");
-    // Record the start time
     clock_t start = clock();
-    // Perform selection sort
     selectionSort(arr, n);
-    // Record the end time
     clock_t end = clock();
-    // Calculate the time taken for sorting
     double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
-    // Output the time taken to sort for the current value of n
     printf("\\nTime taken to sort for n = %d: %lf seconds\\n\\n", n, time_taken);
-    // Display sorted numbers
     printf("Sorted numbers for n = %d:\\n", n);
     for (int i = 0; i < n; i++) {
         printf("%d ", arr[i]);
     }
     printf("\\n\\n");
-    // Free the dynamically allocated memory
     free(arr);
     return 0;
 }`,
@@ -496,17 +465,14 @@ int main() {
     },
     {
         title: "10. Quick Sort",
-        code: `// Program 10: Quick Sort method and compute its time complexity
-#include <stdio.h>
+        code: `#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-// Function to swap two elements
 void swap(int* a, int* b) {
     int temp = *a;
     *a = *b;
     *b = temp;
 }
-// Function to partition the array and return the pivot index
 int partition(int arr[], int low, int high) {
     int pivot = arr[high];
     int i = (low - 1);
@@ -519,7 +485,6 @@ int partition(int arr[], int low, int high) {
     swap(&arr[i + 1], &arr[high]);
     return (i + 1);
 }
-// Function to perform Quick Sort
 void quickSort(int arr[], int low, int high) {
     if (low < high) {
         int pi = partition(arr, low, high);
@@ -527,7 +492,6 @@ void quickSort(int arr[], int low, int high) {
         quickSort(arr, pi + 1, high);
     }
 }
-// Function to generate random numbers between 0 and 999
 int generateRandomNumber() {
     return rand() % 1000;
 }
@@ -535,7 +499,6 @@ int main() {
     int n;
     printf("enter size of array: ");
     scanf("%d",&n);
-    // Allocate memory for the array
     int* arr = (int*)malloc(n * sizeof(int));
     srand(time(NULL));
     printf("Random numbers for n = %d:\\n", n);
@@ -544,23 +507,16 @@ int main() {
         printf("%d ", arr[i]);
     }
     printf("\\n");
-    // Record the start time
     clock_t start = clock();
-    // Perform quick sort
     quickSort(arr, 0, n - 1);
-    // Record the end time
     clock_t end = clock();
-    // Calculate the time taken for sorting
     double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
-    // Output the time taken to sort for the current value of n
     printf("\\nTime taken to sort for n = %d: %lf seconds\\n\\n", n, time_taken);
-    // Display sorted numbers
     printf("Sorted numbers for n = %d:\\n", n);
     for (int i = 0; i < n; i++) {
         printf("%d ", arr[i]);
     }
     printf("\\n\\n");
-    // Free the dynamically allocated memory
     free(arr);
     return 0;
 }`,
@@ -569,22 +525,17 @@ int main() {
     },
     {
         title: "11. Merge Sort",
-        code: `// Program 11: Merge Sort method and compute its time complexity
-#include <stdio.h>
+        code: `#include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-// Merge two subarrays of arr[]
 void merge(int arr[], int l, int m, int r) {
     int i, j, k;
     int n1 = m - l + 1;
     int n2 = r - m;
-    // Create temporary arrays
     int L[n1], R[n2];
-    // Copy data to temporary arrays L[] and R[]
     for (i = 0; i < n1; i++) L[i] = arr[l + i];
     for (j = 0; j < n2; j++) R[j] = arr[m + 1 + j];
     
-    // Merge the temporary arrays back into arr[l..r]
     i = 0; j = 0; k = l;
     while (i < n1 && j < n2) {
         if (L[i] <= R[j]) {
@@ -594,28 +545,21 @@ void merge(int arr[], int l, int m, int r) {
         }
         k++;
     }
-    // Copy the remaining elements of L[], if there are any
     while (i < n1) {
         arr[k] = L[i]; i++; k++;
     }
-    //Copy the remaining elements of R[], if there are any
     while (j < n2) {
         arr[k] = R[j]; j++; k++;
     }
 }
-// Merge sort function
 void mergeSort(int arr[], int l, int r) {
     if (l < r) {
-        // Same as (l+r)/2, but avoids overflow for large l and r
         int m = l + (r - l) / 2;
-        // Sort first and second halves
         mergeSort(arr, l, m);
         mergeSort(arr, m + 1, r);
-        // Merge the sorted halves
         merge(arr, l, m, r);
     }
 }
-// Function to generate random numbers between 0 and 999
 int generateRandomNumber() {
     return rand() % 1000;
 }
@@ -623,7 +567,6 @@ int main() {
     int n = 6000;
     printf("enter size of array: ");
     scanf("%d",&n);
-    // Allocate memory for the array
     int* arr = (int*)malloc(n * sizeof(int));
     srand(time(NULL));
     printf("Random numbers for n = %d:\\n", n);
@@ -632,23 +575,17 @@ int main() {
         printf("%d ", arr[i]);
     }
     printf("\\n");
-    // Record the start time
     clock_t start = clock();
-    // Perform merge sort
     mergeSort(arr, 0, n - 1);
-    // Record the end time
     clock_t end = clock();
-    // Calculate the time taken for sorting
     double time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
     
     printf("\\nTime taken to sort for n = %d: %lf seconds\\n\\n", n, time_taken);
-    // Display sorted numbers
     printf("Sorted numbers for n = %d:\\n", n);
     for (int i = 0; i < n; i++) {
         printf("%d ", arr[i]);
     }
     printf("\\n\\n");
-    // Free the dynamically allocated memory
     free(arr);
     return 0;
 }`,
@@ -657,11 +594,9 @@ int main() {
     },
     {
         title: "12. N-Queen's Problem",
-        code: `// Program 12: N Queen's problem using Backtracking
-#define N 4
+        code: `#define N 4
 #include <stdbool.h>
 #include <stdio.h>
-// A utility function to print solution
 void printSolution(int board[N][N]) {
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < N; j++) {
@@ -673,41 +608,28 @@ void printSolution(int board[N][N]) {
         printf("\\n");
     }
 }
-// A utility function to check if a queen can be placed on board[row][col].
 bool isSafe(int board[N][N], int row, int col) {
     int i, j;
-    // Check this row on left side
     for (i = 0; i < col; i++)
         if (board[row][i]) return false;
-    // Check upper diagonal on left side
     for (i = row, j = col; i >= 0 && j >= 0; i--, j--)
         if (board[i][j]) return false;
-    // Check lower diagonal on left side
     for (i = row, j = col; j >= 0 && i < N; i++, j--)
         if (board[i][j]) return false;
     return true;
 }
-// A recursive utility function to solve N Queen problem
 bool solveNQUtil(int board[N][N], int col) {
-    // Base case: If all queens are placed then return true
     if (col >= N) return true;
     
-    // Consider this column and try placing this queen in all rows one by one
     for (int i = 0; i < N; i++) {
         if (isSafe(board, i, col)) {
-            // Place this queen in board[i][col]
             board[i][col] = 1;
-            // Recur to place rest of the queens
             if (solveNQUtil(board, col + 1)) return true;
-            // If placing queen in board[i][col] doesn't lead to a solution, 
-            // then remove queen from board[i][col]
-            board[i][col] = 0; // BACKTRACK
+            board[i][col] = 0; 
         }
     }
-    // If the queen cannot be placed in any row in this column col then return false
     return false;
 }
-// This function solves the N Queen problem using Backtracking.
 bool solveNQ() {
     int board[N][N] = {
         { 0, 0, 0, 0 },
@@ -722,7 +644,6 @@ bool solveNQ() {
     printSolution(board);
     return true;
 }
-// Driver program to test above function
 int main() {
     solveNQ();
     return 0;
