@@ -205,6 +205,7 @@ function toggleStealthMode() {
         if(!isCodeView) toggleGuide(); 
 
         // Show F11 Toast
+<<<<<<< HEAD
         if(stealthToast) {
             stealthToast.classList.remove('hidden');
             setTimeout(() => stealthToast.classList.remove('opacity-0'), 10);
@@ -215,6 +216,16 @@ function toggleStealthMode() {
                 setTimeout(() => stealthToast.classList.add('hidden'), 500);
             }, 4000);
         }
+=======
+        stealthToast.classList.remove('hidden');
+        setTimeout(() => stealthToast.classList.remove('opacity-0'), 10);
+        
+        // Hide Toast after 4 seconds
+        setTimeout(() => {
+            stealthToast.classList.add('opacity-0');
+            setTimeout(() => stealthToast.classList.add('hidden'), 500);
+        }, 4000);
+>>>>>>> 49470db000685573c866d193d784eb4274252fb2
 
     } else {
         document.body.classList.remove('stealth-active');
